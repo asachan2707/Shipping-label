@@ -1,0 +1,154 @@
+<button class="btn btn-primary btn-sm" (click)="openModal()">Fill shipping details</button>
+
+<clr-wizard #wizard [(clrWizardOpen)]="opened" [clrWizardSize]="'lg'" (clrWizardOnNext)="onNext()" (clrWizardOnFinish)='onFinish()'>
+    <clr-wizard-title>Shipping Label</clr-wizard-title>
+
+    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'">Done</clr-wizard-button>
+
+    <clr-wizard-page [clrWizardPageNextDisabled]="!senderForm.valid">
+        <ng-template clrPageTitle>Sender's Address</ng-template>
+        <form #senderForm="ngForm">
+            <section class="form-block">
+                <div class="form-group">
+                    <label>name</label>
+                    <label for="nameInput" aria-haspopup="true" role="tooltip" [class.invalid]="name.touched && !name.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-bottom-left">
+                        <input type="text" id="nameInput" required [(ngModel)]="model.sender.name" name="name" #name="ngModel">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Street</label>
+                    <label for="streetInput" aria-haspopup="true" role="tooltip" [class.invalid]="street.touched && !street.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-top-left">
+                        <input type="text" id="streetInput" required [(ngModel)]="model.sender.street" name="street"
+                            #street="ngModel">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>City</label>
+                    <label for="cityInput" aria-haspopup="true" role="tooltip" [class.invalid]="city.touched && !city.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-top-left">
+                        <input type="text" id="cityInput" required [(ngModel)]="model.sender.city" name="city" #city="ngModel">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>State</label>
+                    <label for="stateInput" aria-haspopup="true" role="tooltip" [class.invalid]="state.touched && !state.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-top-left">
+                        <input type="text" id="stateInput" required [(ngModel)]="model.sender.state" name="state"
+                            #state="ngModel">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Zip</label>
+                    <label for="zipInput" aria-haspopup="true" role="tooltip" [class.invalid]="zip.touched && !zip.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-top-left">
+                        <input type="number" id="zipInput" required [(ngModel)]="model.sender.zip" name="zip" #zip="ngModel">
+                        <span class="tooltip-content">Provide number value!</span>
+                    </label>
+                </div>
+            </section>
+        </form>
+    </clr-wizard-page>
+
+    <clr-wizard-page [clrWizardPageNextDisabled]="!receiverForm.valid">
+        <ng-template clrPageTitle>Receiver's Address</ng-template>
+        <form #receiverForm="ngForm">
+            <section class="form-block">
+                <div class="form-group">
+                    <label>name</label>
+                    <label for="nameInput" aria-haspopup="true" role="tooltip" [class.invalid]="name.touched && !name.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-bottom-left">
+                        <input type="text" id="nameInput" required [(ngModel)]="model.receiver.name" name="name" #name="ngModel">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Street</label>
+                    <label for="streetInput" aria-haspopup="true" role="tooltip" [class.invalid]="street.touched && !street.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-top-left">
+                        <input type="text" id="streetInput" required [(ngModel)]="model.receiver.street" name="street"
+                            #street="ngModel">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>City</label>
+                    <label for="cityInput" aria-haspopup="true" role="tooltip" [class.invalid]="city.touched && !city.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-top-left">
+                        <input type="text" id="cityInput" required [(ngModel)]="model.receiver.city" name="city" #city="ngModel">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>State</label>
+                    <label for="stateInput" aria-haspopup="true" role="tooltip" [class.invalid]="state.touched && !state.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-top-left">
+                        <input type="text" id="stateInput" required [(ngModel)]="model.receiver.state" name="state"
+                            #state="ngModel">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Zip</label>
+                    <label for="zipInput" aria-haspopup="true" role="tooltip" [class.invalid]="zip.touched && !zip.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-top-left">
+                        <input type="number" id="zipInput" required [(ngModel)]="model.receiver.zip" name="zip" #zip="ngModel">
+                        <span class="tooltip-content">Provide number value!</span>
+                    </label>
+                </div>
+            </section>
+        </form>
+    </clr-wizard-page>
+
+    <clr-wizard-page clrWizardPagePreventDefault="true" (clrWizardPageOnCommit)="onpkgWeightCommit()"
+        (clrWizardPageOnCancel)="doCancel()" [clrWizardPageNextDisabled]="weight.pristine || !packageWeightForm.valid">
+        <ng-template clrPageTitle>Weight</ng-template>
+        <form #packageWeightForm="ngForm" [class.hide]="loadingFlag">
+            <section class="form-block">
+                <div class="form-group">
+                    <label>Weight</label>
+                    <label for="weightInput" aria-haspopup="true" role="tooltip" [class.invalid]="weight.touched && !weight.valid"
+                        class="tooltip tooltip-validation tooltip-md tooltip-bottom-left">
+                        <input type="number" id="weightInput" required [(ngModel)]="model.weight" name="weight" #weight="ngModel">
+                        <span class="tooltip-content">Provide number value!</span>
+                    </label>
+                </div>
+            </section>
+        </form>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Shipping Option</ng-template>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>
+            Validate your information
+        </ng-template>
+        <ng-template clrPageNavTitle>
+            <span>Submit changes</span>
+        </ng-template>
+    </clr-wizard-page>
+</clr-wizard>
+
+<div *ngIf="isDataReady" class="mx-1 address">
+    <span class="sender-info" *ngFor="let key of objectKey(model)">
+        <div *ngIf="getAddress(key); else otherDetail" class="mx-1 my-1">
+            <b>{{key | titlecase}} address</b>
+            <div *ngFor="let subkey of objectKey(model[key])" class="px-2">
+                {{subkey | titlecase}}: {{model[key][subkey]}}
+            </div>
+        </div>
+        <ng-template #otherDetail>
+            <div class="px-1 py-1"><b>{{key}}: </b> {{model[key]}}</div>
+        </ng-template>
+    </span>
+</div>
