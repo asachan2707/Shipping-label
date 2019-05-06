@@ -138,17 +138,3 @@
         </ng-template>
     </clr-wizard-page>
 </clr-wizard>
-
-<div *ngIf="isDataReady" class="mx-1 address">
-    <span class="sender-info" *ngFor="let key of objectKey(model)">
-        <div *ngIf="getAddress(key); else otherDetail" class="mx-1 my-1">
-            <b>{{key | titlecase}} address</b>
-            <div *ngFor="let subkey of objectKey(model[key])" class="px-2">
-                {{subkey | titlecase}}: {{model[key][subkey]}}
-            </div>
-        </div>
-        <ng-template #otherDetail>
-            <div class="px-1 py-1"><b>{{key}}: </b> {{model[key]}}</div>
-        </ng-template>
-    </span>
-</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ClrWizard, ClrWizardPage } from '@clr/angular';
 
 @Component({
@@ -7,9 +7,9 @@ import { ClrWizard, ClrWizardPage } from '@clr/angular';
     styleUrls: ['./wizard.component.css']
 })
 export class WizardComponent implements OnInit {
+
+    @Output() complete = new EventEmitter();
     @ViewChild('wizard') wizard: ClrWizard;
-    @ViewChild('senderForm') senderForm: any;
-    @ViewChild('senderForm') receiverForm: any;
     @ViewChild('packageWeightForm') packageWeightForm: any;
 
     opened = false;
@@ -41,16 +41,6 @@ export class WizardComponent implements OnInit {
     get readyToFinish(): boolean {
         return !this.untouched && !this.loading;
     }
-
-    // have to define doCancel because page will prevent doCancel from working
-    // if the page had a previous button, you would need to call
-    // this.wizard.previous() manually as well...
-
-
-    // doCancel(): void {
-    //     this.wizard.close();
-    //     this.resetWizard();
-    // }
 
     resetWizard(): void {
         this.wizard.reset();
@@ -114,30 +104,18 @@ export class WizardComponent implements OnInit {
         this.opened = true;
     }
 
-    onNext() {
-        console.log('wizard: onNext', this.wizard);
-    }
+    onNext() {}
     onFinish() {
         this.isDataReady = true;
-        console.log('model: ', this.model);
+        this.complete.emit({
+            data: this.model,
+            flag: this.isDataReady
+        });
     }
     onCancel() {
         this.untouched = true;
         this.loading = false;
         this.errorFlag = false;
         this.doCancel();
-        console.log('wizard: onCancel', this.wizard);
-    }
-
-    objectKey(model) {
-        return Object.keys(model);
-    }
-
-    getAddress(key: string): boolean {
-        if (key === 'sender' || key === 'receiver') {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
